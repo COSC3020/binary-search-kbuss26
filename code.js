@@ -13,18 +13,23 @@ function binarySearch(list, element) {
             return -1;
         case 1: // One element inside list; test for said element
             return ((element == list[0]) ? 0 : -1);
-        default: // Other cases
-            var midPos = Math.floor((list.length) / 2); // Define middle position
-            if (element == list[midPos]) { return midPos; }  // Element in middle position check
+        default: // Recursive cases
+            var midPos = Math.floor(i / 2); // Define middle position
 
-            // Recursive cases
+            // Parent case
+            if (element == list[midPos]) {
+                var checkLeft = binarySearch(list.slice(0, midPos), element); // Searches for first occurring case
+                return ((checkLeft == -1) ? midPos : checkLeft); 
+            } 
+
+            // Child cases
             var accum = 0; // Accumulator value for index return value if found
             var result;
             if (element < list[midPos]) { // Element less than middle value
                 result = binarySearch(list.slice(0, midPos), element);
             } else { // Element greater than middle value (equal has already been checked)
                 accum += midPos;
-                result = binarySearch(list.slice(midPos, list.length), element);
+                result = binarySearch(list.slice(midPos, i), element);
             }
             return ((result == -1) ? -1 : (accum + result)); 
             // Returns -1 if not found or index if found in recursive calls
